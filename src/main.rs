@@ -34,7 +34,9 @@ fn main() {
                 },
                 Command::GetMax => {
                     println!(" [+] Max Brightness {}", max_brightness);
-                }
+                },
+                Command::Increase{value} => {},
+                Command::Descrease{value} => {},
             }
         },
         None => {

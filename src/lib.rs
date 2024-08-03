@@ -14,6 +14,14 @@ pub enum Command {
     },
     Get,
     GetMax,
+    Increase{
+        #[clap(value_name = "INCREASE", help = "Brightness value increase")]
+        value: u32,
+    },
+    Descrease{
+        #[clap(value_name = "DESCREASE", help = "Brightness value descrease")]
+        value: u32,
+    },
 
 }
 
@@ -46,6 +54,14 @@ pub fn get_max_brightness(device_path: &str) -> Option<u32> {
 pub fn set_brightness(device_path: &str, value: u32) -> std::io::Result<()> {
     let brightness_path = Path::new(device_path).join("brightness");
     fs::write(brightness_path, value.to_string())
+}
+
+pub fn increase_brightness(device_path: &str, value: u32) -> std::io::Result<()> {
+    todo!();
+}
+
+pub fn descrease_brightness(device_path: &str, value: u32) -> std::io::Result<()> {
+    todo!();
 }
 
 
