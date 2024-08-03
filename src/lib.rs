@@ -16,9 +16,16 @@ pub fn get_backlight_devices() -> Option<String> {
     None
 }
 
+
 pub fn read_brightness(device_path: &str) -> Option<u32> {
     let brightness_path = Path::new(device_path).join("brightness");
     let content = fs::read_to_string(brightness_path).ok()?;
+    content.trim().parse().ok()
+}
+
+pub fn get_max_brightness(device_path: &str) -> Option<u32> {
+    let max_brightness_path = Path::new(device_path).join("max_brightness");
+    let content = fs::read_to_string(max_brightness_path).ok()?;
     content.trim().parse().ok()
 }
 
