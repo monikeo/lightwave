@@ -11,15 +11,21 @@ fn adjust_brightness(device_path: &str, brightness_state: &mut u32, value: u32, 
 
 fn handle_command(command: Command, device_path: &str, brightness_state: &mut u32, max_brightness: u32) {
     match command {
-        Command::Set{value} => {},
+        Command::Set{value} => {
+            set_brightness_command(device_path, brightness_state, value, max_brightness);
+        },
         Command::Get => {
             println!("[+] Current Brightness: {}", brightness_state);
         },
         Command::GetMax => {
             println!("[+] Max Brightness: {}", max_brightness);
         },
-        Command::Increase{value} => {},
-        Command::Decrease{value} => {},
+        Command::Increase{value} => {
+            adjust_brightness(device_path, brightness_state, value, max_brightness, true);
+        },
+        Command::Decrease{value} => {
+            adjust_brightness(device_path, brightness_state, value, max_brightness, false);
+        },
     }
 }
 
