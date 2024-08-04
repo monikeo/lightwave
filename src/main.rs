@@ -34,6 +34,7 @@ fn adjust_brightness(device_path: &str, brightness_state: &mut u32, value: u32, 
     }
 }
 
+
 fn handle_command(command: Command, device_path: &str, brightness_state: &mut u32, max_brightness: u32) {
     match command {
         Command::Set{value} => {
