@@ -47,16 +47,29 @@ fn main() {
         },
         Command::Increase{value} => {
             let total_value = value + brightness_state;
-            if total_value != brightness_state && total_value < max_brightness {
-
+            if total_value >= max_brightness {
+                let status = set_brightness(&device_path, max_brightness);                    
+                if status.is_ok() {
+                    brightness_state = max_brightness;
+                }
+            } else if total_value != brightness_state {
+                let status = set_brightness(&device_path, total_value);
+                if status.is_ok() {
+                    brightness_state = total_value;
+                }
             }
         },
         Command::Decrease{value} => {
             let total_value = brightness_state - value;
             if total_value < 0 {return}
             if total_value != brightness_state && total_value < max_brightness {
-
+                let status = set_brightness(&device_path, total_value);
+                if status.is_ok() {
+                    brightness_state = total_value;
+                }
             }
         },
     }
 }
+
+
