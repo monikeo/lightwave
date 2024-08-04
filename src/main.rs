@@ -2,11 +2,36 @@ use lightwave::*;
 use clap::Parser;
 
 fn set_brightness_command(device_path: &str, brightness_state: &mut u32, value: u32, max_brightness: u32) {
-
+    if value >= max_brightness {
+        eprintln!("[-] ERROR: Value exceeds maximum brightness.");
+        return;
+    }
+    if value != *brightness_state {
+        match set_brightness(device_path, value) {
+            Ok(_) => {
+                *brightness_state = value;
+                println!("[+] Brightness set to {}", value);
+            }
+            Err(err) => eprintln!("[-] ERROR: Failed to set brightness: {}", err),
+        }
+    }
 }
 
 fn adjust_brightness(device_path: &str, brightness_state: &mut u32, value: u32, max_brightness: u32, increase: bool) {
-
+    let new_brightness = if increase {
+        (*brightness_state).saturating_add(value)
+    } else {
+        (*brightness_state).saturating_sub(value)
+    };
+    if new_brightness != *brightness_state && new_brightness <= max_brightness {
+        match set_brightness(device_path, new_brightness) {
+            Ok(_) => {
+                *brightness_state = new_brightness;
+                println!("[+] Brightness adjusted to {}", new_brightness);
+            }
+            Err(err) => eprintln!("[-] ERROR: Failed to adjust brightness: {}", err),
+        }
+    }
 }
 
 fn handle_command(command: Command, device_path: &str, brightness_state: &mut u32, max_brightness: u32) {
