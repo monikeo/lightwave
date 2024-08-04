@@ -18,7 +18,7 @@ pub enum Command {
         #[clap(value_name = "INCREASE", help = "Brightness value increase")]
         value: u32,
     },
-    Descrease{
+    Decrease{
         #[clap(value_name = "DESCREASE", help = "Brightness value descrease")]
         value: u32,
     },
@@ -60,7 +60,7 @@ pub fn increase_brightness(device_path: &str, value: u32) -> std::io::Result<()>
     todo!();
 }
 
-pub fn descrease_brightness(device_path: &str, value: u32) -> std::io::Result<()> {
+pub fn decrease_brightness(device_path: &str, value: u32) -> std::io::Result<()> {
     todo!();
 }
 
