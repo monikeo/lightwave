@@ -1,8 +1,32 @@
 use lightwave::*;
 use clap::Parser;
 
+fn set_brightness_command(device_path: &str, brightness_state: &mut u32, value: u32, max_brightness: u32) {
+
+}
+
+fn adjust_brightness(device_path: &str, brightness_state: &mut u32, value: u32, max_brightness: u32, increase: bool) {
+
+}
+
+fn handle_command(command: Command, device_path: &str, brightness_state: &mut u32, max_brightness: u32) {
+    match command {
+        Command::Set{value} => {},
+        Command::Get => {
+            println!("[+] Current Brightness: {}", brightness_state);
+        },
+        Command::GetMax => {
+            println!("[+] Max Brightness: {}", max_brightness);
+        },
+        Command::Increase{value} => {},
+        Command::Decrease{value} => {},
+    }
+}
+
 fn main() {
     let command = Command::parse();
+
+    // // Find backlight device path
     let device_path = match get_backlight_devices() {
         Some(path) => path,
         None => {
@@ -11,6 +35,7 @@ fn main() {
         }
     };
 
+    // Read current brightness state
     let mut brightness_state = match read_brightness(&device_path) {
         Some(brightness) => brightness,
         None => {
@@ -19,6 +44,7 @@ fn main() {
         }
     };
 
+    // Get maximum brightness
     let max_brightness = match get_max_brightness(&device_path) {
         Some(max_brightness) => max_brightness,
         None => {
@@ -71,5 +97,3 @@ fn main() {
         },
     }
 }
-
-
