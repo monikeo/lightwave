@@ -2,7 +2,7 @@ use lightwave::*;
 use clap::Parser;
 
 fn set_brightness_command(device_path: &str, brightness_state: &mut u32, value: u32, max_brightness: u32) {
-    if value >= max_brightness {
+    if value > max_brightness {
         eprintln!("[-] ERROR: Value exceeds maximum brightness.");
         return;
     }
@@ -84,47 +84,6 @@ fn main() {
         }
     };
 
-    match command {
-        Command::Set{value} => {
-            if value < 0 {return}
-            if value < max_brightness && value != brightness_state {
-                if let Err(err) = set_brightness(&device_path, value) {
-                    eprintln!(" [-] ERROR: Failed to set brightness: {}", value);
-                } else {
-                    brightness_state = value;
-                    println!(" [+] Brightness set to {}", value);
-                }
-            }
-        },
-        Command::Get => {
-            println!(" [+] Current Brightness {}", brightness_state);
-        },
-        Command::GetMax => {
-            println!(" [+] Max Brightness {}", max_brightness);
-        },
-        Command::Increase{value} => {
-            let total_value = value + brightness_state;
-            if total_value >= max_brightness {
-                let status = set_brightness(&device_path, max_brightness);                    
-                if status.is_ok() {
-                    brightness_state = max_brightness;
-                }
-            } else if total_value != brightness_state {
-                let status = set_brightness(&device_path, total_value);
-                if status.is_ok() {
-                    brightness_state = total_value;
-                }
-            }
-        },
-        Command::Decrease{value} => {
-            let total_value = brightness_state - value;
-            if total_value < 0 {return}
-            if total_value != brightness_state && total_value < max_brightness {
-                let status = set_brightness(&device_path, total_value);
-                if status.is_ok() {
-                    brightness_state = total_value;
-                }
-            }
-        },
-    }
+    // Handle the parsed command
+    handle_command(command, &device_path, &mut brightness_state, max_brightness);
 }
